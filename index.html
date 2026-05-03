@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XG360 - Live VIP Tips</title>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-green: #2ea043;
+            --text-white: #ffffff;
+            --text-gray: #8b949e;
+            --border-color: #30363d;
+            --hot-red: #ff4500;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { width: 100%; max-width: 500px; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo { color: var(--accent-green); font-weight: 800; font-size: 1.4rem; }
+
+        .section-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .match-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .hot-badge {
+            background-color: var(--hot-red);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .won-badge { background-color: var(--accent-green); }
+
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .teams {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-around;
+            background: #0d1117;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .result-item { text-align: center; }
+        .result-label { font-size: 0.7rem; color: var(--text-gray); display: block; }
+
+        .unlock-btn {
+            background-color: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item { color: var(--text-gray); text-decoration: none; text-align: center; font-size: 0.8rem; cursor: pointer; }
+        .active { color: var(--accent-green); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="logo">XG360 VIP</div>
+        <div style="font-weight: bold;">GHS 0.00</div>
+    </div>
+
+    <!-- HOME PAGE (Today's VIP) -->
+    <div id="home-page">
+        <div class="section-title">Today's VIP Tips</div>
+        <div id="today-container"></div>
+    </div>
+
+    <!-- RESULTS PAGE (Yesterday's Games) -->
+    <div id="results-page" class="hidden">
+        <div class="section-title">Yesterday's Results</div>
+        <div id="yesterday-container"></div>
+    </div>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('home')">🏠<br>Home</div>
+    <div class="nav-item" onclick="showPage('home')">📈<br>Live</div>
+    <div class="nav-item" id="results-btn" onclick="showPage('results')">📄<br>Results</div>
+    <div class="nav-item" onclick="showPage('home')">👤<br>Profile</div>
+</nav>
+
+<script>
+    const PAYSTACK_PUBLIC_KEY = 'pk_live_1ec9005312b5fcb234c14390ef3c58cc638d1596'; 
+
+    // TODAY'S DATA
+    const todayVips = [
+        { league: "Turkey League 2 Play Offs", time: "14:00", home: "Elazigspor", away: "Adana", badge: "🔥 HIGH CONFIDENCE", score: "3 - 0" },
+        { league: "Italy Kings League", time: "19:00", home: "Stallions", away: "Alpak FC", badge: "💎 HIGH CONFIDENCE", score: "1 - 3" }
+    ];
+
+    // YESTERDAY'S DATA
+    const yesterdayResults = [
+        { league: "Belgium National Division 1", home: "Charleroi B", away: "St. Liege U23", picked: "0 - 2", actual: "0 - 2", status: "WON" },
+        { league: "Brazil Serie A", home: "Cruzeiro", away: "Atletico-MG", picked: "1 - 3", actual: "1 - 3", status: "WON" }
+    ];
+
+    function showPage(page) {
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('results-page').classList.add('hidden');
+        
+        // Reset nav colors
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+        if(page === 'home') {
+            document.getElementById('home-page').classList.remove('hidden');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        } else {
+            document.getElementById('results-page').classList.remove('hidden');
+            document.getElementById('results-btn').classList.add('active');
+        }
+    }
+
+    function renderContent() {
+        // Render Today
+        const todayDiv = document.getElementById('today-container');
+        todayDiv.innerHTML = todayVips.map(m => `
+            <div class="match-card">
+                <div class="hot-badge">${m.badge}</div>
+                <div class="match-info"><span>${m.league}</span><span>${m.time} GMT</span></div>
+                <div class="teams">${m.home} vs ${m.away}</div>
+                <button class="unlock-btn" onclick="payWithPaystack('${m.home} vs ${m.away}', '${m.score}')">
+                    🔓 UNLOCK CORRECT SCORE - GHS 100
+                </button>
+            </div>
+        `).join('');
+
+        // Render Yesterday
+        const yesterdayDiv = document.getElementById('yesterday-container');
+        yesterdayDiv.innerHTML = yesterdayResults.map(m => `
+            <div class="match-card">
+                <div class="hot-badge won-badge">✅ ${m.status}</div>
+                <div class="match-info"><span>${m.league}</span><span>Yesterday</span></div>
+                <div class="teams">${m.home} vs ${m.away}</div>
+                <div class="result-row">
+                    <div class="result-item"><span class="result-label">VIP PICK</span><b>${m.picked}</b></div>
+                    <div class="result-item"><span class="result-label">OUTCOME</span><b>${m.actual}</b></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function payWithPaystack(matchName, finalScore) {
+        let handler = PaystackPop.setup({
+            key: PAYSTACK_PUBLIC_KEY,
+            email: 'customer@xg360.com', 
+            amount: 10000, 
+            currency: 'GHS',
+            ref: 'XG_' + Math.floor((Math.random() * 1000000) + 1),
+            callback: function(response) {
+                alert('Success! \n\nCorrect Score for ' + matchName + ' is: ' + finalScore + '\n\nTransaction ID: ' + response.reference);
+            }
+        });
+        handler.openIframe();
+    }
+
+    window.onload = renderContent;
+</script>
+
+</body>
+</html>
