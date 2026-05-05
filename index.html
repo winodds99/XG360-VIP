@@ -3,127 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XG360 - Live VIP Tips</title>
+    <title>SPORTY FIXED GAMES</title>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --accent-green: #2ea043;
-            --text-white: #ffffff;
-            --text-gray: #8b949e;
-            --border-color: #30363d;
-            --hot-red: #ff4500;
+            /* Liquid Glass Palette */
+            --bg-liquid: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #020617 100%);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-gold: #ffcc00;
+            --accent-green: #00ff88;
+            --text-bright: #ffffff;
+            --text-dim: #949ba4;
+            --btn-gradient: linear-gradient(180deg, #2ecc71, #27ae60);
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: var(--bg-liquid);
+            background-attachment: fixed; /* Keeps the "liquid" still while scrolling */
+            color: var(--text-bright);
+            font-family: 'Inter', -apple-system, sans-serif;
             margin: 0;
-            padding: 15px;
-            padding-bottom: 100px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 500px; }
+        .container { 
+            width: 92%; 
+            max-width: 480px; 
+            padding-bottom: 120px;
+        }
 
         .header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             width: 100%;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
+            padding: 50px 0 10px 0;
         }
 
-        .logo { color: var(--accent-green); font-weight: 800; font-size: 1.4rem; }
+        .logo-main {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0;
+            color: #fff;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo-highlight { color: var(--accent-gold); }
+
+        .logo-sub {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .animation-container {
+            width: 100%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .track-line {
+            width: 80%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .animated-ball {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-green));
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            left: 0;
+            box-shadow: 0 0 15px var(--accent-green), 0 0 5px white;
+            animation: moveBall 2.5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% { left: 0%; transform: scale(1); }
+            50% { left: 100%; transform: translateX(-12px) scale(1.2); }
+            100% { left: 0%; transform: scale(1); }
+        }
 
         .section-title {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin: 15px 0 15px 5px;
+            color: var(--accent-gold);
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
 
+        /* Glassmorphism Cards */
         .match-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); /* The "Glass" effect */
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 24px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .hot-badge {
-            background-color: var(--hot-red);
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-
-        .won-badge { background-color: var(--accent-green); }
-
-        .match-info {
+        .badge-container {
             display: flex;
             justify-content: space-between;
-            color: var(--text-gray);
-            font-size: 0.8rem;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .vip-badge {
+            background: #27ae60;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .league-label {
+            font-size: 0.7rem;
+            color: var(--accent-green);
+            font-weight: 700;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+            text-align: center;
         }
 
         .teams {
             font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-weight: 800;
+            margin-bottom: 25px;
             text-align: center;
+            color: #fff;
         }
 
         .result-row {
-            display: flex;
-            justify-content: space-around;
-            background: #0d1117;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px 10px;
+            border-radius: 16px;
+            margin-top: 5px;
         }
 
         .result-item { text-align: center; }
-        .result-label { font-size: 0.7rem; color: var(--text-gray); display: block; }
+
+        .result-item b { 
+            font-size: 1rem; 
+            color: var(--accent-green); 
+            display: block;
+            margin-top: 5px;
+        }
+
+        .result-label { 
+            font-size: 0.6rem; 
+            color: var(--text-dim); 
+            display: block; 
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .status-won { color: var(--accent-gold) !important; }
 
         .unlock-btn {
-            background-color: var(--accent-green);
+            background: var(--btn-gradient);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 18px;
             width: 100%;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
 
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
+            bottom: 25px;
+            width: 90%;
+            max-width: 420px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
             padding: 15px 0;
-            border-top: 1px solid var(--border-color);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
         }
 
-        .nav-item { color: var(--text-gray); text-decoration: none; text-align: center; font-size: 0.8rem; cursor: pointer; }
-        .active { color: var(--accent-green); }
+        .nav-item { color: var(--text-dim); text-align: center; font-size: 0.75rem; cursor: pointer; }
+        .nav-item.active { color: var(--accent-green); font-weight: bold; }
         .hidden { display: none; }
     </style>
 </head>
@@ -131,85 +225,92 @@
 
 <div class="container">
     <div class="header">
-        <div class="logo">XG360 VIP</div>
-        <div style="font-weight: bold;">GHS 0.00</div>
+        <h1 class="logo-main">SPORTY <span class="logo-highlight">FIXED</span></h1>
+        <span class="logo-sub">Games</span>
     </div>
 
-    <!-- HOME PAGE (Today's VIP) -->
+    <div class="animation-container">
+        <div class="track-line">
+            <div class="animated-ball"></div>
+        </div>
+    </div>
+
     <div id="home-page">
-        <div class="section-title">Today's VIP Tips</div>
+        <div class="section-title">Today's Certified Games</div>
         <div id="today-container"></div>
     </div>
 
-    <!-- RESULTS PAGE (Yesterday's Games) -->
     <div id="results-page" class="hidden">
-        <div class="section-title">Yesterday's Results</div>
+        <div class="section-title">VERIFIED WINNINGS (YESTERDAY)</div>
         <div id="yesterday-container"></div>
     </div>
 </div>
 
 <nav class="bottom-nav">
-    <div class="nav-item active" onclick="showPage('home')">🏠<br>Home</div>
-    <div class="nav-item" onclick="showPage('home')">📈<br>Live</div>
-    <div class="nav-item" id="results-btn" onclick="showPage('results')">📄<br>Results</div>
-    <div class="nav-item" onclick="showPage('home')">👤<br>Profile</div>
+    <div class="nav-item active" onclick="showPage('home')">🏠<br>Games</div>
+    <div class="nav-item" id="results-btn" onclick="showPage('results')">🏆<br>History</div>
+    <div class="nav-item" onclick="showPage('home')">💳<br>Payment</div>
 </nav>
 
 <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_1ec9005312b5fcb234c14390ef3c58cc638d1596'; 
 
-    // TODAY'S DATA
     const todayVips = [
-        { league: "Turkey League 2 Play Offs", time: "14:00", home: "Elazigspor", away: "Adana", badge: "🔥 HIGH CONFIDENCE", score: "3 - 0" },
-        { league: "Italy Kings League", time: "19:00", home: "Stallions", away: "Alpak FC", badge: "💎 HIGH CONFIDENCE", score: "1 - 3" }
+        { league: "Campionato Sammarinese", time: "18:45", home: "Fiorentino", away: "La Fiorita", badge: "Direct Source", score: "1 - 3" },
+        { league: "Campionato Sammarinese", time: "18:45", home: "Folgore", away: "Domagnano", badge: "Insider Fixed", score: "3 - 2" }
     ];
 
-    // YESTERDAY'S DATA
-    const yesterdayResults = [
-        { league: "Belgium National Division 1", home: "Charleroi B", away: "St. Liege U23", picked: "0 - 2", actual: "0 - 2", status: "WON" },
-        { league: "Brazil Serie A", home: "Cruzeiro", away: "Atletico-MG", picked: "1 - 3", actual: "1 - 3", status: "WON" }
+    const pastWinnings = [
+        { league: "Turkey TFF 2. Lig", home: "Elazigspor", away: "Adana 1954 FK", picked: "2 - 1", outcome: "2 - 1", status: "WON" },
+        { league: "Italy Kings League", home: "Stallions", away: "Alpak FC", picked: "1 - 3", outcome: "1 - 3", status: "WON" }
     ];
 
     function showPage(page) {
-        document.getElementById('home-page').classList.add('hidden');
-        document.getElementById('results-page').classList.add('hidden');
-        
-        // Reset nav colors
+        document.getElementById('home-page').classList.toggle('hidden', page !== 'home');
+        document.getElementById('results-page').classList.toggle('hidden', page !== 'results');
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-        if(page === 'home') {
-            document.getElementById('home-page').classList.remove('hidden');
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
-        } else {
-            document.getElementById('results-page').classList.remove('hidden');
-            document.getElementById('results-btn').classList.add('active');
-        }
+        if(page === 'home') document.querySelectorAll('.nav-item')[0].classList.add('active');
+        else document.getElementById('results-btn').classList.add('active');
     }
 
     function renderContent() {
-        // Render Today
         const todayDiv = document.getElementById('today-container');
         todayDiv.innerHTML = todayVips.map(m => `
             <div class="match-card">
-                <div class="hot-badge">${m.badge}</div>
-                <div class="match-info"><span>${m.league}</span><span>${m.time} GMT</span></div>
+                <div class="badge-container">
+                    <span class="vip-badge" style="background:#ffcc00; color:#000;">${m.badge}</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim)">${m.time} GMT</span>
+                </div>
+                <div class="league-label">${m.league}</div>
                 <div class="teams">${m.home} vs ${m.away}</div>
                 <button class="unlock-btn" onclick="payWithPaystack('${m.home} vs ${m.away}', '${m.score}')">
-                    🔓 UNLOCK CORRECT SCORE - GHS 100
+                    Access Correct Score — 100 GHS
                 </button>
             </div>
         `).join('');
 
-        // Render Yesterday
         const yesterdayDiv = document.getElementById('yesterday-container');
-        yesterdayDiv.innerHTML = yesterdayResults.map(m => `
+        yesterdayDiv.innerHTML = pastWinnings.map(m => `
             <div class="match-card">
-                <div class="hot-badge won-badge">✅ ${m.status}</div>
-                <div class="match-info"><span>${m.league}</span><span>Yesterday</span></div>
+                <div class="badge-container">
+                    <span class="vip-badge">✅ VERIFIED</span>
+                    <span style="font-size: 0.65rem; color: var(--text-dim)">Final Result</span>
+                </div>
+                <div class="league-label">${m.league}</div>
                 <div class="teams">${m.home} vs ${m.away}</div>
                 <div class="result-row">
-                    <div class="result-item"><span class="result-label">VIP PICK</span><b>${m.picked}</b></div>
-                    <div class="result-item"><span class="result-label">OUTCOME</span><b>${m.actual}</b></div>
+                    <div class="result-item">
+                        <span class="result-label">Picked Score</span>
+                        <b>${m.picked}</b>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Outcome</span>
+                        <b>${m.outcome}</b>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Status</span>
+                        <b class="status-won">${m.status}</b>
+                    </div>
                 </div>
             </div>
         `).join('');
@@ -218,12 +319,11 @@
     function payWithPaystack(matchName, finalScore) {
         let handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
-            email: 'customer@xg360.com', 
+            email: 'vip@sportyfixed.com', 
             amount: 10000, 
             currency: 'GHS',
-            ref: 'XG_' + Math.floor((Math.random() * 1000000) + 1),
             callback: function(response) {
-                alert('Success! \n\nCorrect Score for ' + matchName + ' is: ' + finalScore + '\n\nTransaction ID: ' + response.reference);
+                alert('Payment Confirmed! \n\nCorrect Score for ' + matchName + ': ' + finalScore);
             }
         });
         handler.openIframe();
